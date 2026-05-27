@@ -62,8 +62,10 @@ export function useTransactionFilters() {
 
   const showClearedSection = !anyStatusFilter || (appliedFilters?.clearedSelected ?? false);
   const showPendingSection = !anyStatusFilter || (appliedFilters?.pendingSelected ?? false);
-  const filteredCleared = useMemo(() => clearedTransactions.filter(filterTx), [filterTx]);
-  const filteredPending = useMemo(() => pendingTransactions.filter(filterTx), [filterTx]);
+  const byDateDesc = (a: { date: string }, b: { date: string }) =>
+    new Date(b.date).getTime() - new Date(a.date).getTime();
+  const filteredCleared = useMemo(() => clearedTransactions.filter(filterTx).sort(byDateDesc), [filterTx]);
+  const filteredPending = useMemo(() => pendingTransactions.filter(filterTx).sort(byDateDesc), [filterTx]);
 
   const clearBenefitFilter = () =>
     setAppliedFilters((prev) => prev && { ...prev, benefitSelections: DEFAULT_BENEFIT_SELECTIONS });

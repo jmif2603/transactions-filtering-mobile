@@ -191,7 +191,7 @@ const SectionLabel = ({ label }: { label: string }) => (
 
 // ============ Type helper ============
 
-type WalletBenefitType = 'HSA_FSA' | 'HRA' | 'DCFSA' | 'LPFSA' | 'RemoteWork' | 'Transit' | 'LSA' | 'Parking' | 'Rewards' | 'Funding';
+type WalletBenefitType = 'HSA_FSA' | 'HRA' | 'DCFSA' | 'LPFSA' | 'RemoteWork' | 'Transit' | 'LSA' | 'Parking' | 'Rewards' | 'Funding' | 'Investment';
 
 const toBenefit = (b: Transaction['benefit']): WalletBenefitType => b;
 
@@ -515,8 +515,10 @@ const HomescreenWebUnified = ({ userName = 'Frank' }: HomescreenWebUnifiedProps)
     }
     return true;
   });
-  const filteredPending = filteredTransactions.filter(t => t.type === 'Pending');
-  const filteredCleared = filteredTransactions.filter(t => t.type === 'Cleared');
+  const byDateDesc = (a: { date: string }, b: { date: string }) =>
+    new Date(b.date).getTime() - new Date(a.date).getTime();
+  const filteredPending = filteredTransactions.filter(t => t.type === 'Pending').sort(byDateDesc);
+  const filteredCleared = filteredTransactions.filter(t => t.type === 'Cleared').sort(byDateDesc);
 
   const notifTotal = 2;
 
